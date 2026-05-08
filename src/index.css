@@ -1,111 +1,133 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+/* Stili per il bg dinamico */
+.transition-bg {
+  transition:
+    background-image 1s ease-in-out,
+    background-color 1s ease-in-out;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+@keyframes default-pulse {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.1);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+.emoji-pulse {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.weather-card:hover .emoji-pulse {
+  animation: pulse-animation 1s infinite;
+}
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
+@keyframes pulse-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+.bg-default {
+  /* Overlay scuro + Immagine */
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+    url("https://img.freepik.com/foto-premium/cielo-e-nuvole-ambiente-natura-sfondo-meteo-e-concetto-di-meteorologia_360074-11143.jpg");
+
+  animation: default-pulse 15s ease-in-out infinite;
+}
+
+/* Sunny */
+@keyframes sunny-pan {
+  0% {
+    background-position: 0% 50%;
   }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+  50% {
+    background-position: 100% 50%;
   }
-}
-
-body {
-  margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  100% {
+    background-position: 0% 50%;
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+.bg-sunny {
+  background-image:
+    linear-gradient(135deg, rgba(255, 165, 0, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%),
+    url("https://static.vecteezy.com/ti/foto-gratuito/p2/1925378-cielo-sereno-in-estate-gratuito-foto.jpg");
+
+  background-size: 150% 150%;
+  animation: sunny-pan 20s ease-in-out infinite;
+}
+
+/* Cloudy */
+@keyframes cloudy-drift {
+  0% {
+    background-position: center 100%;
+  }
+  100% {
+    background-position: center 0%;
   }
 }
-p {
-  margin: 0;
+.bg-cloudy {
+  /* Overlay grigio scuro + Immagine */
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+    url("https://img.freepik.com/foto-premium/cielo-grigio-prima-della-pioggia-sfondo-nuvoloso-grigio_69110-107.jpg");
+
+  background-size: cover;
+  animation: cloudy-drift 30s linear infinite;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* Rainy */
+@keyframes rainy-overlay {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.9;
+  }
+  91% {
+    opacity: 1;
+  }
+}
+.bg-rainy {
+  /* Overlay blu scuro */
+  background-image:
+    linear-gradient(rgba(15, 32, 39, 0.6), rgba(44, 83, 100, 0.8)),
+    url("https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?q=80&w=2000");
+
+  animation: rainy-overlay 3s ease-out infinite;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* Mist, Fog & Haze */
+@keyframes mist-fade {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+.bg-mist {
+  /* Overlay bianco/grigio per dare l'effetto nebbia */
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.4), rgba(100, 100, 100, 0.6)),
+    url("https://www.ansa.it/webimages/img_1129x635/2025/6/9/7837bb4877a3e819caae20d8185d78b7.jpg");
+  background-size: cover;
+  animation: mist-fade 8s ease-in-out infinite;
 }
